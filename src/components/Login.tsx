@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, logout } from "../features/data/userSlice";
 
@@ -24,22 +24,39 @@ export const Login: FC = () => {
         }),
       });
       const data = await response.json();
+      console.log(data);
+
       if (response.ok && data.token) {
-        dispatch(login(data));
-        navigate("/users");
+        dispatch(
+          login({
+            token: data,
+            loggedIn: true,
+          })
+        );
+        console.log(`Success`);
       } else {
         dispatch(logout());
-        // setLoginStatus(`Error: "Unknown error logout`);
+        console.log(`Error: "Unknown error logout`);
       }
     } catch (error) {
       dispatch(logout());
-      // setLoginStatus(`Error: ${(error as Error).message || "Unknown error"}`);
+      console.log(`Error: ${(error as Error).message || "Unknown error"}`);
     }
   };
+
+  const token: string = useSelector((state: any) => state.token);
+  const loggedIn: boolean = useSelector((state: any) => state.loggedIn);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleLogin();
+    
+    console.log(token);
+    console.log(loggedIn);
+
+    if (loggedIn) {
+      navigate("/users");
+    }
   };
 
   return (

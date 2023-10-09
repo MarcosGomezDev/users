@@ -5,12 +5,13 @@ import { User } from "../Types/userType";
 import { useEffect, useState } from "react";
 import { addData } from "../features/data/dataSlice";
 import { Pagination } from "./Pagination";
+import { Data } from "../Types/dataType";
 
 const Logout = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const data = useSelector((state: any) => state.data);
+  const data: Data = useSelector((state: any) => state.data);
 
   const userList = (pag: number) => {
     const url: string = `https://reqres.in/api/users?page=${pag}`;
