@@ -1,5 +1,3 @@
-import { useEffect } from "react";
-
 interface Props {
   userPerPage: number;
   currentPage: number;
@@ -13,10 +11,6 @@ export const Pagination: React.FC<Props> = ({
   setCurrentPage,
   totalUsers,
 }) => {
-  useEffect(() => {
-    console.log(currentPage);
-  }, [currentPage]);
-
   const pageNumbers: number[] = [];
 
   for (let i = 1; i <= Math.ceil(totalUsers / userPerPage); i++) {
@@ -24,11 +18,15 @@ export const Pagination: React.FC<Props> = ({
   }
 
   const onPreviousPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const onNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < pageNumbers.length) {
+      setCurrentPage((prev) => prev + 1);
+    }
   };
 
   const onSelectPage = (page: number) => {
@@ -42,15 +40,9 @@ export const Pagination: React.FC<Props> = ({
         role="navigation"
         aria-label="pagination"
       >
-        <a className="pag-previous" onClick={onPreviousPage}>
+        <button className="pag-previous" onClick={onPreviousPage}>
           Anterior
-        </a>
-        {/* <a
-          className={`pag-previous ${currentPage === 1 ? "is-disabled" : ""}`}
-          onClick={onPreviousPage}
-        >
-          Anterior
-        </a> */}
+        </button>
         <ul className="pagination-list">
           {pageNumbers.map((noPage) => (
             <li key={noPage}>
@@ -65,32 +57,10 @@ export const Pagination: React.FC<Props> = ({
             </li>
           ))}
         </ul>
-        <a className="pag-next" onClick={onNextPage}>
+        <button className="pag-next" onClick={onNextPage}>
           Siguiente
-        </a>
-
-        {/* <a
-          className={`pag-next ${
-            currentPage >= pageNumbers.length ? "is-disbaled" : ""
-          }`}
-          onClick={onNextPage}
-        >
-          Siguiente
-        </a> */}
+        </button>
       </nav>
-      {/* <ul>
-        {data?.data.length <= 6 &&
-          data?.data.map((user: User) => (
-            <li key={user.id}>
-              <img src={user.avatar} />
-              <div>
-                <p>{user.email}</p>
-                <p>{user.first_name}</p>
-                <p>{user.last_name}</p>
-              </div>
-            </li>
-          ))}
-      </ul> */}
     </div>
   );
 };

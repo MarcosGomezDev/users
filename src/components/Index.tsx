@@ -5,9 +5,9 @@ export const Index = () => {
     <div>
       <h1>Identifícate</h1>
 
-      <div className="login-bt">
+      <button className="login-bt">
         <NavLink to="/users">Login</NavLink>
-      </div>
+      </button>
     </div>
   );
 };
