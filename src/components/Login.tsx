@@ -32,6 +32,7 @@ export const Login: FC = () => {
             loggedIn: true,
           })
         );
+        navigate("/users");
       } else {
         dispatch(logout());
       }
@@ -45,18 +46,15 @@ export const Login: FC = () => {
     console.log(loggedIn);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     handleLogin();
-    if ((token != '') && (loggedIn)) {
-      navigate("/users");
-    }
   };
 
   return (
     <div className="login">
       <h1 className="headers">Login Here</h1>
-      <form className="contact" onSubmit={(e) => handleSubmit(e)}>
+      <form className="contact">
         <input
           type="email"
           placeholder="Email"
@@ -69,10 +67,10 @@ export const Login: FC = () => {
           value={passwordInp}
           onChange={(e) => setPasswordInp(e.target.value)}
         />
-        <input type="submit" value="Submit" />
-        {
-          !loggedIn && <p>Usuario no encontrado</p>
-        }
+        <button type="submit" value="Submit" onClick={(e) => handleSubmit(e)}>
+          Submit
+        </button>
+        {/* {!loggedIn && <p>Usuario no encontrado</p>} */}
       </form>
     </div>
   );
