@@ -2,7 +2,6 @@ import { FC, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, logout } from "../features/data/userSlice";
-import { LoginUser } from "../Types/loginType";
 
 export const Login: FC = () => {
   const url: string = "https://reqres.in/api/login";
@@ -10,9 +9,8 @@ export const Login: FC = () => {
   const navigate = useNavigate();
   const [emailInp, setemailInp] = useState<string>("");
   const [passwordInp, setPasswordInp] = useState<string>("");
-  const token = useSelector((state: any) => state.userLog.token);
-  const loggedIn = useSelector((state: any) => state.userLog.loggedIn);
-  // const [token, setToken] = useState<string | null>(null);
+  const token: string = useSelector((state: any) => state.userLog.token);
+  const loggedIn: boolean = useSelector((state: any) => state.userLog.loggedIn);
 
   const handleLogin = async () => {
     try {
@@ -27,8 +25,6 @@ export const Login: FC = () => {
         }),
       });
       const data = await response.json();
-      console.log(data);
-
       if (response.ok && data.token) {
         dispatch(
           login({
@@ -36,19 +32,11 @@ export const Login: FC = () => {
             loggedIn: true,
           })
         );
-        console.log(token);
-        console.log(loggedIn);
-
-        navigate("/users");
-
-        console.log(`Success`);
       } else {
         dispatch(logout());
-        console.log(`Error: "Unknown error login`);
       }
     } catch (error) {
       dispatch(logout());
-      console.log(`Error: ${(error as Error).message || "Unknown error"}`);
     }
   };
 
@@ -60,6 +48,9 @@ export const Login: FC = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleLogin();
+    if ((token != '') && (loggedIn)) {
+      navigate("/users");
+    }
   };
 
   return (
@@ -79,6 +70,9 @@ export const Login: FC = () => {
           onChange={(e) => setPasswordInp(e.target.value)}
         />
         <input type="submit" value="Submit" />
+        {
+          !loggedIn && <p>Usuario no encontrado</p>
+        }
       </form>
     </div>
   );
