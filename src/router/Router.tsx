@@ -6,15 +6,14 @@ import Logout from "../components/Logout";
 import { useSelector } from "react-redux";
 
 export const Router = () => {
-  const data: boolean = useSelector((state: any) => state.loggedIn);
+  const token: string = useSelector((state: any) => state.userLog.token);
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/users" element={data ? <Logout /> : <Login />} />
-        {/* <Route path="/users" element={<Logout />} /> */}
+        <Route path="/users" element={token != "" ? <Logout /> : <Login />} />
         <Route path="*" element={<Error404 />} />
       </Routes>
     </BrowserRouter>

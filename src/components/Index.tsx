@@ -6,7 +6,7 @@ export const Index = () => {
       <h1>Identifícate</h1>
 
       <button className="login-bt">
-        <NavLink to="/users">Login</NavLink>
+        <NavLink to="/login">Login</NavLink>
       </button>
     </div>
   );
